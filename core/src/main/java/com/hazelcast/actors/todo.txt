@@ -1,0 +1,107 @@
+TODO
+
+- not possible to do normal hazelcast operations from the Actor.init
+
+- add migration
+
+- a future returned by the send
+
+- the mailbox of the actor is not durable, it is an ordinary blocking queue.
+
+- actor termination.
+
+- when an actor is created, the actor partition should store information regarding that actor, so that on failover
+the actor can be reconstructed
+
+- when an actor is killed, the actor partition should remove information regarding that actor, so that there is
+no memory leak
+
+- when a link is created, the actor runtime should verify that the actor exists.
+
+NICE
+
+- constructing a more complex object from the json msg
+
+- optimization for local calls.
+
+- when a message is send, currently you won't get any guarantee if it is delivered.
+
+- the ability to create durable/non durable actors.
+
+- when sending of a message fails because actor doesn't exist, actor should be notified
+
+- when sending of a message fails because mailbox too full, the actor should be notified.
+
+- weak guarantees currently for a started entity.. when you get back a ref, you,have no
+idea if for example the entity is registered in the namespace.
+
+- mechanism to build mailboxes
+
+- reflective actor doesn't deal with with ambiguity: 1 arg vs 2 arg receive methods
+
+
+- dealing with the interrupted exception
+
+DONE
+
+
+- using the fork join executor.
+
+- reflective actor doesn't deal with subclassing ambiguity
+
+- reflective actor should be able to receive supclasses. Currently when no specific type is provided,
+the UnprocessedException is thrown.
+
+- reflective actor should be able to deal with Object. Currently it will result in a Stackoverflow exception
+
+- mechanism to choose between the different actor containers.
+
+- receive method can be cached.
+
+- the ActorRef is now PartitionAware. So when used in a Hazelcastmap, the correct partition will be used.
+
+- cleaning up of execution
+
+- receive methods should be able to throw checked exception
+
+- deal with receive method failure in the actorcontainer
+
+- reduced the size the actor, everything can be accessed from the actor-context.
+
+- remove unwanted runnable creation for every message in the ActorContainer
+
+- the ActorContainer is now completely responsible for processing the message. Not spread over the system
+
+- it should be possible to do a receive without a sender
+
+- when the processing of a message fails, the actor that send the message should be notified?
+
+- an actor should be able to listen to failures in other actors.
+
+- rest api for sending messages to actors.
+
+- added a scheduling mechanism on the ActorRuntime so that messages can repeatedly be send to an actor.
+
+- added the ListAttribute and cleaned up the WebCluster
+
+- support for dispatch
+
+- configure dependencies from the serviceconfig
+
+- dependency injection in the actor
+
+- the entity should have access to management context.
+
+- the recipe should be able to pass properties.
+
+- the ActorRef needs to be available in the Actor.
+
+- stopping an actor.
+
+- the actor is receiving the sender
+
+- the actor needs to be able to get an 'init' so it can initialize
+
+- the actor needs to get access to the ActorSystem
+
+- the actor needs to get access to the HazelcastInstance
