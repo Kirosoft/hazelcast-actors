@@ -41,16 +41,13 @@ public class ActorService implements ManagedService, MigrationAwareService, Remo
         this.actorConfig = findActorServiceConfig();
         this.actorFactory = actorConfig.getActorFactory();
         this.containerFactoryFactory = actorConfig.getActorContainerFactoryFactory();
-        this.linksMap = this.nodeEngine.getNode().hazelcastInstance.getMap("linksMap");
-        this.actorMap = this.nodeEngine.getNode().hazelcastInstance.getMap("actorMap");
-        this.responseMap = this.nodeEngine.getNode().hazelcastInstance.getMap("responseMap");
 
         //initializing the PartitionContainers.
         partitionContainers = new ActorPartitionContainer[nodeEngine.getPartitionService().getPartitionCount()];
         for (int partitionId = 0; partitionId < partitionContainers.length; partitionId++) {
             PartitionInfo partition = nodeEngine.getPartitionService().getPartitionInfo(partitionId);
             partitionContainers[partitionId] = new ActorPartitionContainer(this, partition);
-        }
+        }        
     }
 
     private ActorServiceConfig findActorServiceConfig() {
@@ -91,6 +88,11 @@ public class ActorService implements ManagedService, MigrationAwareService, Remo
             ActorRuntimeProxyImpl found = actorSystems.put(id, actorSystem);
             actorSystem = found != null ? found : actorSystem;
         }
+        this.linksMap = this.nodeEngine.getNode().hazelcastInstance.getMap("linksMap");
+        this.actorMap = this.nodeEngine.getNode().hazelcastInstance.getMap("actorMap");
+        this.responseMap = this.nodeEngine.getNode().hazelcastInstance.getMap("responseMap");
+
+        
         return actorSystem;
 	}
 

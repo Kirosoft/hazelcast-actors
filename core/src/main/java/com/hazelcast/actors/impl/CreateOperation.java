@@ -1,15 +1,13 @@
 package com.hazelcast.actors.impl;
 
-import com.hazelcast.actors.api.ActorRecipe;
-import com.hazelcast.actors.api.ActorRef;
-import com.hazelcast.actors.utils.Util;
-import com.hazelcast.spi.Operation;
-import com.hazelcast.spi.PartitionAwareOperation;
-import com.hazelcast.spi.impl.AbstractNamedOperation;
-
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+
+import com.hazelcast.actors.api.ActorRecipe;
+import com.hazelcast.actors.api.ActorRef;
+import com.hazelcast.actors.utils.Util;
+import com.hazelcast.spi.impl.AbstractNamedOperation;
 
 class CreateOperation  extends AbstractNamedOperation {
     private String name;
@@ -54,6 +52,8 @@ class CreateOperation  extends AbstractNamedOperation {
     @Override
     public void run() {
         ActorService actorService = (ActorService) getService();
+        ActorPartitionContainer[] partitionContainers = actorService.partitionContainers;
+        
         ActorPartitionContainer actorPartitionContainer = actorService.partitionContainers[getPartitionId()];
         ActorPartition actorPartition = actorPartitionContainer.getPartition(name);
         try {
