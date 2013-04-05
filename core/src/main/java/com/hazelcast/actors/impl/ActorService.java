@@ -25,7 +25,6 @@ public class ActorService implements ManagedService, MigrationAwareService, Remo
 
     protected NodeEngineImpl nodeEngine;
 
-    private ILogger logger;
     protected ActorPartitionContainer[] partitionContainers;
     private ActorServiceConfig actorConfig;
     protected IMap<ActorRef, Set<ActorRef>> linksMap;
@@ -37,7 +36,7 @@ public class ActorService implements ManagedService, MigrationAwareService, Remo
     @Override
     public void init(NodeEngine nodeEngine, Properties properties) {
         this.nodeEngine = (NodeEngineImpl) nodeEngine;
-        this.logger = nodeEngine.getLogger(ActorService.class.getName());
+        nodeEngine.getLogger(ActorService.class.getName());
         this.actorConfig = findActorServiceConfig();
         this.actorFactory = actorConfig.getActorFactory();
         this.containerFactoryFactory = actorConfig.getActorContainerFactoryFactory();
@@ -109,8 +108,7 @@ public class ActorService implements ManagedService, MigrationAwareService, Remo
 
 	@Override
 	public String getServiceName() {
-		// TODO Auto-generated method stub
-		return this.SERVICE_NAME;
+		return ActorService.SERVICE_NAME;
 	}
 
 	@Override
