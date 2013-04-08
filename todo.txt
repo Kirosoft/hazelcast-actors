@@ -1,10 +1,12 @@
 TODO
 
-- not possible to do normal hazelcast operations from the Actor.init
+- not possible to do normal hazelcast operations from the Actor.init -
+  Init gets called before hazelcast node gets initialized.
 
 - add migration
 
-- a future returned by the send
+- a future returned by the send - I prefer erlang way. Message back the
+  sending actor. The send message has message + sending actor ref
 
 - the mailbox of the actor is not durable, it is an ordinary blocking queue.
 

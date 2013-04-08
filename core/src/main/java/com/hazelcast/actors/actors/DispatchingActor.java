@@ -1,21 +1,12 @@
 package com.hazelcast.actors.actors;
 
-import com.hazelcast.actors.api.Actor;
+import static java.lang.String.format;
+
 import com.hazelcast.actors.api.ActorRef;
 import com.hazelcast.actors.api.exceptions.UnprocessedException;
-import com.hazelcast.actors.utils.Util;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-import static java.lang.String.format;
-import static java.lang.reflect.Modifier.isAbstract;
-import static java.lang.reflect.Modifier.isStatic;
 
 /**
- * The ReflectiveActor is an AbstractActor that uses reflection to dispatch to right receive method. So a user
+ * The DispatchingActor is an AbstractActor that uses reflection to dispatch to right receive method. So a user
  * doesn't need to dispatch on the correct message type. For every type map message you are interested in,
  * create a receive method.
  * <p/>
