@@ -1,13 +1,12 @@
 package com.hazelcast.actors.impl;
 
+import java.io.IOException;
+
 import com.hazelcast.actors.api.ActorRef;
 import com.hazelcast.actors.utils.Util;
+import com.hazelcast.nio.ObjectDataInput;
+import com.hazelcast.nio.ObjectDataOutput;
 import com.hazelcast.spi.AbstractOperation;
-import com.hazelcast.spi.Operation;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
 
 class ExitOperation extends AbstractOperation {
     private String name;
@@ -21,14 +20,16 @@ class ExitOperation extends AbstractOperation {
         this.target = target;
     }
 
-    public void writeInternal(DataOutput out) throws IOException {
+    @Override
+    public void writeInternal(ObjectDataOutput out) throws IOException {
         out.writeUTF(name);
         byte[] targetBytes = Util.toBytes(target);
         out.writeInt(targetBytes.length);
         out.write(targetBytes);
     }
 
-    public void readInternal(DataInput in) throws IOException {
+    @Override
+    public void readInternal(ObjectDataInput in) throws IOException {
         name = in.readUTF();
         int targetBytesLength = in.readInt();
         byte[] targetBytes = new byte[targetBytesLength];

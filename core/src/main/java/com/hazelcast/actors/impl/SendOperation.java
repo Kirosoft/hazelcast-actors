@@ -1,12 +1,12 @@
 package com.hazelcast.actors.impl;
 
+import java.io.IOException;
+
 import com.hazelcast.actors.api.ActorRef;
 import com.hazelcast.actors.utils.Util;
+import com.hazelcast.nio.ObjectDataInput;
+import com.hazelcast.nio.ObjectDataOutput;
 import com.hazelcast.spi.AbstractOperation;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
 
 class SendOperation extends AbstractOperation {
     private String name;
@@ -25,7 +25,8 @@ class SendOperation extends AbstractOperation {
         this.sender = sender;
     }
 
-    public void writeInternal(DataOutput out) throws IOException {
+    @Override
+    public void writeInternal(ObjectDataOutput out) throws IOException {
         out.writeUTF(name);
         out.writeUTF(destinationId);
         byte[] messageBytes = Util.toBytes(message);
@@ -41,7 +42,8 @@ class SendOperation extends AbstractOperation {
         }
     }
 
-    public void readInternal(DataInput in) throws IOException {
+    @Override
+    public void readInternal(ObjectDataInput in) throws IOException {
         name = in.readUTF();
         destinationId = in.readUTF();
 

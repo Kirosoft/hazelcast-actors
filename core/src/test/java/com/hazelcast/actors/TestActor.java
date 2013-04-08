@@ -50,7 +50,7 @@ public class TestActor extends AbstractActor {
             int size = messages.size();
 
             if (size == 0) {
-                Util.sleep(1000);
+                Util.sleep(2000);
                 continue;
             }
 

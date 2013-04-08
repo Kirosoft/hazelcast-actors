@@ -1,12 +1,12 @@
 package com.hazelcast.actors.impl;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 
 import com.hazelcast.actors.api.ActorRecipe;
 import com.hazelcast.actors.api.ActorRef;
 import com.hazelcast.actors.utils.Util;
+import com.hazelcast.nio.ObjectDataInput;
+import com.hazelcast.nio.ObjectDataOutput;
 import com.hazelcast.spi.impl.AbstractNamedOperation;
 
 class CreateOperation  extends AbstractNamedOperation {
@@ -24,7 +24,8 @@ class CreateOperation  extends AbstractNamedOperation {
         this.partitionKey = partitionKey;
     }
 
-    public void writeInternal(DataOutput out) throws IOException {
+    @Override
+    public void writeInternal(ObjectDataOutput out) throws IOException {
         out.writeUTF(name);
 
         byte[] recipeBytes = Util.toBytes(actorRecipe);
@@ -35,8 +36,9 @@ class CreateOperation  extends AbstractNamedOperation {
         out.writeInt(partitionKeyBytes.length);
         out.write(partitionKeyBytes);
     }
-
-    public void readInternal(DataInput in) throws IOException {
+    
+    @Override
+    public void readInternal(ObjectDataInput in) throws IOException {
         this.name = in.readUTF();
         int recipeBytesLength = in.readInt();
 
