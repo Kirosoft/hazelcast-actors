@@ -5,7 +5,8 @@ import com.hazelcast.actors.api.ActorRecipe;
 import com.hazelcast.actors.api.ActorRef;
 import com.hazelcast.actors.impl.actorcontainers.ActorContainer;
 import com.hazelcast.actors.utils.Util;
-import com.hazelcast.spi.Invocation;
+//import com.hazelcast.spi.Invocation;
+import com.hazelcast.spi.InvocationBuilder;
 import com.hazelcast.spi.NodeEngine;
 import com.hazelcast.spi.Operation;
 import com.hazelcast.spi.OperationService;
@@ -110,8 +111,8 @@ public class ActorRuntimeProxyImpl implements ActorRuntimeProxy {
         createOperation.setServiceName(ActorService.SERVICE_NAME);
         try {
             int partitionId = actorService.nodeEngine.getPartitionService().getPartitionId(actorService.nodeEngine.toData(partitionKey));
-            Invocation invocation = operationService.createInvocationBuilder(ActorService.SERVICE_NAME, createOperation, partitionId).build();
-            Future future = invocation.invoke();
+            InvocationBuilder invocationBuilder = operationService.createInvocationBuilder(ActorService.SERVICE_NAME, createOperation, partitionId);
+            Future future = invocationBuilder.invoke();
             ActorRef ref = (ActorRef) actorService.nodeEngine.toObject(future.get());
             Object result;
             //we need to apply some hacking; because we need to wait till the container completes activation.
@@ -146,17 +147,6 @@ public class ActorRuntimeProxyImpl implements ActorRuntimeProxy {
         }
     }
 
-    private Object getPartitionKey(ActorRecipe recipe) {
-        Object partitionKey = recipe.getPartitionKey();
-        //if there is no PartitionKey assigned to the recipe, it means that the caller doesn't care
-        //where the actor is going to run. So lets pick a partition randomly.
-        if (partitionKey == null) {
-            partitionKey = random.nextInt();
-        }
-        return partitionKey;
-    }
-
-
     @Override
     public ActorRef spawn(ActorRecipe recipe) {
         return spawnAndLink(null, recipe);
@@ -185,9 +175,9 @@ public class ActorRuntimeProxyImpl implements ActorRuntimeProxy {
         sendOperation.setValidateTarget(true);
         sendOperation.setServiceName(ActorService.SERVICE_NAME);
         try {
-            Invocation invocation = operationService.createInvocationBuilder(
-                    ActorService.SERVICE_NAME, sendOperation, destination.getPartitionId()).build();
-            Future future = invocation.invoke();
+            InvocationBuilder invocationBuilder = operationService.createInvocationBuilder(
+                    ActorService.SERVICE_NAME, sendOperation, destination.getPartitionId());
+            Future future = invocationBuilder.invoke();
             Object result = future.get();
             if (result instanceof Throwable) {
                 Throwable throwable = (Throwable) result;
@@ -264,9 +254,9 @@ public class ActorRuntimeProxyImpl implements ActorRuntimeProxy {
         sendOperation.setValidateTarget(true);
         sendOperation.setServiceName(ActorService.SERVICE_NAME);
         try {
-            Invocation invocation = operationService.createInvocationBuilder(
-                    ActorService.SERVICE_NAME, sendOperation, destination.getPartitionId()).build();
-            Future future = invocation.invoke();
+            InvocationBuilder invocationBuilder = operationService.createInvocationBuilder(
+                    ActorService.SERVICE_NAME, sendOperation, destination.getPartitionId());
+            Future future = invocationBuilder.invoke();
             Object result = future.get();
             if (result instanceof Throwable) {
                 Throwable throwable = (Throwable) result;
@@ -298,9 +288,9 @@ public class ActorRuntimeProxyImpl implements ActorRuntimeProxy {
         op.setValidateTarget(true);
         op.setServiceName(ActorService.SERVICE_NAME);
         try {
-            Invocation invocation = operationService.createInvocationBuilder(
-                    ActorService.SERVICE_NAME, op, target.getPartitionId()).build();
-            Future f = invocation.invoke();
+            InvocationBuilder invocationBuilder = operationService.createInvocationBuilder(
+                    ActorService.SERVICE_NAME, op, target.getPartitionId());
+            Future f = invocationBuilder.invoke();
             f.get();
         } catch (RuntimeException e) {
             throw e;
@@ -323,9 +313,35 @@ public class ActorRuntimeProxyImpl implements ActorRuntimeProxy {
     public Object getId() {
         return name;
     }
-    
+
+
+    public String getPartitionKey(ActorRecipe recipe) {
+        String partitionKey = recipe.getPartitionKey();
+        //if there is no PartitionKey assigned to the recipe, it means that the caller doesn't care
+        //where the actor is going to run. So lets pick a partition randomly.
+        if (partitionKey == null) {
+            partitionKey = Integer.toString(random.nextInt());
+        }
+        return partitionKey;
+    }
+
+    // TODO: this seems wrong, there should be another way to decide the partition key
+    // From docs:
+    // Returns the key of partition this DistributedObject is assigned to.
+    // The returned value only has meaning for a non partitioned data-structure like an IAtomicLong.
+    // For a partitioned data-structure like an IMap the returned value will not be null, but otherwise undefined.
+    public String getPartitionKey() {
+        String partitionKey = Integer.toString(random.nextInt());
+        return partitionKey;
+    }
+
     @Override
     public String getName() {
     	return name;
+    }
+
+    @Override
+    public String getServiceName() {
+        return null;
     }
 }

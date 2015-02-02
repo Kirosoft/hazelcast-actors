@@ -20,7 +20,7 @@ public class DispatchingActorTest extends AbstractTest {
 
     @Test
     public void whenExactMatchAndNoSender() throws Exception {
-        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, 0);
+        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, "0");
         DispatchingTestActor actor = new DispatchingTestActor();
         actor.setActorContext(new DummyActorContext(hzInstance, recipe, actorRuntime));
 
@@ -31,7 +31,7 @@ public class DispatchingActorTest extends AbstractTest {
 
     @Test
     public void whenExactMatchAndSender() throws Exception {
-        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, 0);
+        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, "0");
         DispatchingTestActor actor = new DispatchingTestActor();
         actor.setActorContext(new DummyActorContext(hzInstance, recipe, actorRuntime));
 
@@ -49,7 +49,7 @@ public class DispatchingActorTest extends AbstractTest {
 
     @Test
     public void whenNoMatch() throws Exception {
-        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, 0);
+        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, "0");
         DispatchingTestActor actor = new DispatchingTestActor();
         actor.setActorContext(new DummyActorContext(hzInstance, recipe, actorRuntime));
 
@@ -64,7 +64,7 @@ public class DispatchingActorTest extends AbstractTest {
 
     @Test
     public void whenNoSpecificReceiveButSuperClassFound_thenSelectSuperclass() throws Exception {
-        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, 0);
+        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, "0");
         DispatchingTestActor actor = new DispatchingTestActor();
         actor.setActorContext(new DummyActorContext(hzInstance, recipe, actorRuntime));
 
@@ -78,7 +78,7 @@ public class DispatchingActorTest extends AbstractTest {
 
     @Test
     public void whenSpecificReceiveAndLessSpecific_thenSpecific() throws Exception {
-        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, 0);
+        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, "0");
         DispatchingTestActor actor = new DispatchingTestActor();
         actor.setActorContext(new DummyActorContext(hzInstance, recipe, actorRuntime));
 
@@ -92,7 +92,7 @@ public class DispatchingActorTest extends AbstractTest {
 
     @Test
     public void whenReceiveMethodThrowsException() throws Exception {
-        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, 0);
+        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, "0");
         DispatchingTestActor actor = new DispatchingTestActor();
         actor.setActorContext(new DummyActorContext(hzInstance, recipe, actorRuntime));
 
@@ -108,7 +108,7 @@ public class DispatchingActorTest extends AbstractTest {
 
     @Test
     public void whenReceiveObject_thenNotStuckInLoop() throws Exception {
-        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, 0);
+        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, "0");
         DispatchingTestActor actor = new DispatchingTestActor();
         actor.setActorContext(new DummyActorContext(hzInstance, recipe, actorRuntime));
 
@@ -123,7 +123,7 @@ public class DispatchingActorTest extends AbstractTest {
 
     @Test
     public void whenAmbiguousReceive() throws Exception {
-        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, 0);
+        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, "0");
         DispatchingTestActor actor = new DispatchingTestActor();
         actor.setActorContext(new DummyActorContext(hzInstance, recipe, actorRuntime));
 
@@ -138,7 +138,7 @@ public class DispatchingActorTest extends AbstractTest {
 
     @Test
     public void whenReceiveMethodReturnsNoneVoid() throws Exception {
-        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, 0);
+        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, "0");
         DispatchingTestActor actor = new DispatchingTestActor();
         actor.setActorContext(new DummyActorContext(hzInstance, recipe, actorRuntime));
 
@@ -153,7 +153,7 @@ public class DispatchingActorTest extends AbstractTest {
 
     @Test
     public void whenReceiveMethodIsStatic() throws Exception {
-        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, 0);
+        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, "0");
         DispatchingTestActor actor = new DispatchingTestActor();
         actor.setActorContext(new DummyActorContext(hzInstance, recipe, actorRuntime));
 
@@ -168,7 +168,7 @@ public class DispatchingActorTest extends AbstractTest {
 
     @Test
     public void whenReceiveMethodSecondArgumentIsNotActorRef() throws Exception {
-        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, 0);
+        ActorRecipe recipe = new ActorRecipe(DispatchingTestActor.class, "0");
         DispatchingTestActor actor = new DispatchingTestActor();
         actor.setActorContext(new DummyActorContext(hzInstance, recipe, actorRuntime));
 

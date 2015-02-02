@@ -27,7 +27,7 @@ public class SpawnTest extends AbstractTest {
 
     @Test
     public void whenSuccess() {
-        Object partitionKey = "foo";
+        String partitionKey = "foo";
         ActorRecipe recipe = new ActorRecipe(TestActor.class, partitionKey);
         ActorRef ref = actorRuntime.spawn(recipe);
         assertValidActorRef(ref);

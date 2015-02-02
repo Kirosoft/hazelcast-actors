@@ -44,8 +44,8 @@ public class ActorService implements ManagedService, MigrationAwareService, Remo
         //initializing the PartitionContainers.
         partitionContainers = new ActorPartitionContainer[nodeEngine.getPartitionService().getPartitionCount()];
         for (int partitionId = 0; partitionId < partitionContainers.length; partitionId++) {
-            PartitionInfo partition = nodeEngine.getPartitionService().getPartitionInfo(partitionId);
-            partitionContainers[partitionId] = new ActorPartitionContainer(this, partition);
+            //PartitionInfo partition = nodeEngine.getPartitionService().getPartitionInfo(partitionId);
+            partitionContainers[partitionId] = new ActorPartitionContainer(this, partitionId);
         }        
     }
 
@@ -59,28 +59,33 @@ public class ActorService implements ManagedService, MigrationAwareService, Remo
     }
 
     @Override
-    public void beforeMigration(MigrationServiceEvent e) {
-    }
-
-    @Override
-    public void commitMigration(MigrationServiceEvent e) {
-    }
-
-    @Override
-    public void rollbackMigration(MigrationServiceEvent e) {
-    }
-
-    @Override
-    public Operation prepareMigrationOperation(MigrationServiceEvent e) {
+    public Operation prepareReplicationOperation(PartitionReplicationEvent e) {
         if (e.getReplicaIndex() != 0) return null;
 
         ActorPartitionContainer partitionContainer = partitionContainers[e.getPartitionId()];
         return partitionContainer.createMigrationOperation();
     }
 
+    @Override
+    public void beforeMigration(PartitionMigrationEvent e) {
+    }
+
+    @Override
+    public void commitMigration(PartitionMigrationEvent e) {
+    }
+
+    @Override
+    public void rollbackMigration(PartitionMigrationEvent e) {
+    }
+
+    @Override
+    public void clearPartitionReplica(int i) {
+
+    }
+
 	@Override
-	public DistributedObject createDistributedObject(Object objectId) {
-        String id = (String) objectId;
+	public DistributedObject createDistributedObject(String objectId) {
+        String id = objectId;
         ActorRuntimeProxyImpl actorSystem = actorSystems.get(id);
         if (actorSystem == null) {
             actorSystem = new ActorRuntimeProxyImpl(this, id);
@@ -95,20 +100,10 @@ public class ActorService implements ManagedService, MigrationAwareService, Remo
         return actorSystem;
 	}
 
-	@Override
-	public DistributedObject createDistributedObjectForClient(Object objectId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
-	public void destroyDistributedObject(Object objectId) {	
+	public void destroyDistributedObject(String objectId) {
 		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public String getServiceName() {
-		return ActorService.SERVICE_NAME;
 	}
 
 	@Override
@@ -117,10 +112,10 @@ public class ActorService implements ManagedService, MigrationAwareService, Remo
 		
 	}
 
-	@Override
-	public void shutdown() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void shutdown(boolean b) {
+
+    }
+
 
 }

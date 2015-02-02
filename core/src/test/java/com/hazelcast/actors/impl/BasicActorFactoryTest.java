@@ -22,7 +22,7 @@ public class BasicActorFactoryTest {
         String value = "peter";
         Map<String, Object> dependencies = MutableMap.map("autowiredField", value);
         BasicActorFactory factory = new BasicActorFactory(dependencies);
-        SomeActor actor = factory.newActor(new ActorRecipe<>(SomeActor.class, 1));
+        SomeActor actor = factory.newActor(new ActorRecipe<>(SomeActor.class, "1"));
 
         assertNotNull(actor);
         assertEquals(value, actor.autowiredField);
@@ -33,7 +33,7 @@ public class BasicActorFactoryTest {
         String value = "peter";
         Map<String, Object> dependencies = MutableMap.map("autowiredField", value, "nonAutowiredField", "nonsense");
         BasicActorFactory factory = new BasicActorFactory(dependencies);
-        SomeActor actor = factory.newActor(new ActorRecipe<>(SomeActor.class, 1));
+        SomeActor actor = factory.newActor(new ActorRecipe<>(SomeActor.class, "1"));
 
         assertNotNull(actor);
         assertEquals(value, actor.autowiredField);
@@ -43,7 +43,7 @@ public class BasicActorFactoryTest {
     @Test(expected = ActorInstantiationException.class)
     public void noArgConstructorIsMissing() {
         BasicActorFactory factory = new BasicActorFactory();
-        factory.newActor(new ActorRecipe<>(ActorWithMissingNoArgConstructor.class, 1));
+        factory.newActor(new ActorRecipe<>(ActorWithMissingNoArgConstructor.class, "1"));
     }
 
     private static class ActorWithMissingNoArgConstructor implements Actor {
@@ -59,7 +59,7 @@ public class BasicActorFactoryTest {
     public void missingAutowiredDependency() {
         Map<String, Object> dependencies = MutableMap.map();
         BasicActorFactory factory = new BasicActorFactory(dependencies);
-        factory.newActor(new ActorRecipe<>(SomeActor.class, 1));
+        factory.newActor(new ActorRecipe<>(SomeActor.class, "1"));
     }
 
     private static class SomeActor implements Actor {
@@ -78,7 +78,7 @@ public class BasicActorFactoryTest {
     public void staticAutowiredFieldCantBeInjected() {
         Map<String, Object> dependencies = MutableMap.map("autowiredField", "nonsense");
         BasicActorFactory factory = new BasicActorFactory(dependencies);
-        factory.newActor(new ActorRecipe<>(SomeActorWithStaticAutowiredField.class, 1));
+        factory.newActor(new ActorRecipe<>(SomeActorWithStaticAutowiredField.class, "1"));
     }
 
     private static class SomeActorWithStaticAutowiredField implements Actor {
@@ -95,7 +95,7 @@ public class BasicActorFactoryTest {
     public void finalAutowiredFieldCantBeInjected() {
         Map<String, Object> dependencies = MutableMap.map("autowiredField", "nonsense");
         BasicActorFactory factory = new BasicActorFactory(dependencies);
-        factory.newActor(new ActorRecipe<>(SomeActorWithFinalAutowiredField.class, 1));
+        factory.newActor(new ActorRecipe<>(SomeActorWithFinalAutowiredField.class, "1"));
     }
 
     private static class SomeActorWithFinalAutowiredField implements Actor {
@@ -112,6 +112,6 @@ public class BasicActorFactoryTest {
     public void fieldTypeMismatch() {
         Map<String, Object> dependencies = MutableMap.map("autowiredField", new LinkedList());
         BasicActorFactory factory = new BasicActorFactory(dependencies);
-        factory.newActor(new ActorRecipe<>(SomeActor.class, 1));
+        factory.newActor(new ActorRecipe<>(SomeActor.class, "1"));
     }
 }

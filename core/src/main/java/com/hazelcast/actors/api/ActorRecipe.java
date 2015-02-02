@@ -13,18 +13,18 @@ import java.util.Map;
  */
 public class ActorRecipe<A extends Actor> implements Serializable {
     private final String actorClass;
-    private final Object partitionKey;
+    private final String partitionKey;
     private final Map<String, Object> properties;
 
     public ActorRecipe(Class<A> actorClass){
         this(actorClass, null);
     }
 
-    public ActorRecipe(Class<A> actorClass, Object partitionKey) {
+    public ActorRecipe(Class<A> actorClass, String partitionKey) {
         this(actorClass, partitionKey, null);
     }
 
-    public ActorRecipe(Class<A> actorClass, Object partitionKey, Map<String, Object> properties) {
+    public ActorRecipe(Class<A> actorClass, String partitionKey, Map<String, Object> properties) {
         this.actorClass = Util.notNull(actorClass, "actorClass").getName();
         this.partitionKey = partitionKey;
         this.properties = properties;
@@ -38,7 +38,7 @@ public class ActorRecipe<A extends Actor> implements Serializable {
         }
     }
 
-    public Object getPartitionKey() {
+    public String getPartitionKey() {
         return partitionKey;
     }
 

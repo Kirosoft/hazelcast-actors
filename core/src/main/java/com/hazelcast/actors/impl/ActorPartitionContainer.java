@@ -12,12 +12,14 @@ import static com.hazelcast.actors.utils.Util.notNull;
 class ActorPartitionContainer {
 
     private final ConcurrentMap<String, ActorPartition> partitionMap = new ConcurrentHashMap<>();
-    private final PartitionInfo partitionInfo;
+    //private final PartitionInfo partitionInfo;
     private final ActorService actorService;
+    private final int partitionId;
 
-    public ActorPartitionContainer(ActorService actorService, PartitionInfo partitionInfo) {
+    public ActorPartitionContainer(ActorService actorService, int partitionId) {
         this.actorService = notNull(actorService,"actorService");
-        this.partitionInfo = notNull(partitionInfo,"partitionInfo");
+        //this.partitionInfo = notNull(partitionInfo,"partitionInfo");
+        this.partitionId = notNull(partitionId, "partitionId");
     }
 
     protected ActorPartition getPartition(String name) {
@@ -40,7 +42,7 @@ class ActorPartitionContainer {
             k++;
         }
 
-        return new MigrationOperation(partitionInfo.getPartitionId(), partitionChanges);
+        return new MigrationOperation(this.partitionId, partitionChanges);
     }
 
     public void applyChanges(ActorPartitionContent[] changes) {
