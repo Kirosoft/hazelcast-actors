@@ -1,5 +1,6 @@
 hazelcast-actors
 ================
 
-First commit. API changes are done. Builds but something is broken.
+Fixed to build and run tests using Hazelcast 3.4
 WIP
+
